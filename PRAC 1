@@ -1,0 +1,21 @@
+The Intel 8051 is an 8-bit microcontroller introduced in 1980. The Atmel AT89C51 is a low-power CMOS 8-bit microcontroller compatible with the 8051 instruction set, featuring 4KB of Flash EEPROM.
+
+Key Features of 8051
+CPU: 8-bit processor with 64KB external data/code memory space
+RAM: 128 bytes internal data memory (addresses 00H–7FH)
+ROM: 4KB internal program memory
+I/O Ports: Four 8-bit I/O ports (P0, P1, P2, P3)
+Timers: Two 16-bit timers/counters (Timer 0 & Timer 1)
+Serial Port: Full-duplex UART
+Interrupts: 5 interrupt sources (2 external, 2 timers, 1 serial)
+Clock: Typically 11.0592 MHz crystal
+Programming Environment
+Keil µVision IDE: Most popular IDE for 8051 assembly and C programming
+EdSim51: Free online simulator and assembler for 8051
+MCU 8051 IDE: Open-source IDE with simulator
+Universal Programmer: Used to burn hex file into AT89C51 chip
+Memory Map
+00H–1FH: Register banks 0–3 (32 bytes)
+20H–2FH: Bit-addressable area (16 bytes)
+30H–7FH: General purpose RAM (80 bytes)
+80H–FFH: Special Function Registers (SFRs)
