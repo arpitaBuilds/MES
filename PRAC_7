@@ -1,0 +1,23 @@
+ORG 0000H
+MOV A,#01H       ; Initial step pattern (Phase A energized)
+
+LOOP:
+MOV P1,A         ; Send step pattern to ULN2003 driver
+ACALL DELAY      ; Delay between steps (controls speed)
+RL A             ; Next step: rotate pattern left
+CJNE A,#10H,LOOP ; If A ≠ 10H (00010000), keep looping
+; When A reaches 10H, only bits 0-3 valid for 4-phase motor
+MOV A,#01H       ; Reset back to initial step
+SJMP LOOP        ; Repeat continuously
+
+; ---- DELAY (controls motor speed) ----
+DELAY:
+MOV R2,#255
+D1: MOV R3,#255
+D2: DJNZ R3,D2
+DJNZ R2,D1
+RET
+
+END
+📋
+Line
