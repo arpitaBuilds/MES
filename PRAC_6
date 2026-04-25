@@ -1,0 +1,20 @@
+ORG 0000H
+MOV A,#01H       ; Initial pattern: only LED0 ON (0000 0001)
+
+LOOP:
+MOV P1,A         ; Output pattern to Port 1 (all 8 LEDs)
+ACALL DELAY      ; Wait so LED is visible to eye
+RL A             ; Rotate Left: 01→02→04→08→10→20→40→80→01
+SJMP LOOP        ; Repeat forever (infinite chaser)
+
+; ---- SOFTWARE DELAY (nested loops) ----
+DELAY:
+MOV R2,#255      ; Outer loop count
+D1: MOV R3,#255  ; Inner loop count
+D2: DJNZ R3,D2  ; Inner loop: 255 iterations
+DJNZ R2,D1      ; Outer loop: 255 × 255 ≈ 65025 iterations
+RET
+
+END
+📋
+L
