@@ -1,0 +1,30 @@
+; Arithmetic Operations (8051)
+ORG 0000H
+
+; --- ADDITION: 05H + 03H = 08H ---
+MOV A,#05H       ; Load 5 into Accumulator
+MOV R0,#03H      ; Load 3 into R0
+ADD A,R0         ; A = A + R0 = 08H
+MOV 30H,A        ; Store result at RAM addr 30H
+
+; --- SUBTRACTION: 09H - 04H = 05H ---
+MOV A,#09H       ; Load 9 into Accumulator
+MOV R1,#04H      ; Load 4 into R1
+SUBB A,R1        ; A = A - R1 - CY = 05H
+MOV 31H,A        ; Store result at RAM addr 31H
+
+; --- MULTIPLICATION: 05H x 04H = 14H (20) ---
+MOV A,#05H       ; Load 5 into A
+MOV B,#04H       ; Load 4 into B
+MUL AB           ; A=Low byte(14H), B=High byte(00H)
+MOV 32H,A        ; Store low byte at 32H
+MOV 33H,B        ; Store high byte at 33H
+
+; --- DIVISION: 0AH / 03H = 03H rem 01H ---
+MOV A,#0AH       ; Load 10 into A
+MOV B,#03H       ; Load 3 into B (divisor)
+DIV AB           ; A=Quotient(03H), B=Remainder(01H)
+MOV 34H,A        ; Store quotient at 34H
+MOV 35H,B        ; Store remainder at 35H
+
+END
