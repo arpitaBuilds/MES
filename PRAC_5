@@ -1,0 +1,22 @@
+ORG 0000H
+MOV TMOD,#01H   ; Timer 0, Mode 1 (16-bit timer)
+
+MAIN:
+SETB P1.0        ; Set P1.0 HIGH (LED ON)
+ACALL DELAY      ; Call 1ms delay subroutine
+CLR P1.0         ; Set P1.0 LOW (LED OFF)
+ACALL DELAY      ; Call 1ms delay
+SJMP MAIN        ; Infinite loop — toggle forever
+
+; ---- DELAY SUBROUTINE (~1ms at 11.0592 MHz) ----
+DELAY:
+MOV TH0,#0FCH   ; Load high byte of timer count
+MOV TL0,#066H   ; Load low byte of timer count
+SETB TR0         ; Start Timer 0 (TR0=1)
+WAIT:
+JNB TF0,WAIT    ; Wait here until TF0 (overflow flag) = 1
+CLR TR0          ; Stop Timer 0
+CLR TF0          ; Clear overflow flag for next use
+RET              ; Return from subroutine
+
+END
