@@ -1,0 +1,57 @@
+ORG 0000H
+
+; ---- LCD INITIALIZATION ----
+MOV A,#38H       ; 8-bit, 2-line, 5×7 font
+ACALL CMD
+MOV A,#0EH       ; Display ON, Cursor ON
+ACALL CMD
+MOV A,#01H       ; Clear display
+ACALL CMD
+MOV A,#06H       ; Entry mode: increment, no shift
+ACALL CMD
+MOV A,#80H       ; Set DDRAM address = 00H (row1,col1)
+ACALL CMD
+
+; ---- DISPLAY STRING "HELLO" ----
+MOV DPTR,#MSG    ; Point DPTR to message in code memory
+
+LOOP:
+CLR A            ; A = 0 (offset)
+MOVC A,@A+DPTR  ; Read byte from code memory [DPTR+A]
+JZ END           ; If byte = 00H (null terminator), stop
+ACALL DATA       ; Else send as display character
+INC DPTR         ; Advance to next character
+SJMP LOOP
+
+END: SJMP END    ; Infinite loop (halt)
+
+; ---- COMMAND SUBROUTINE ----
+CMD:
+MOV P2,A         ; Put command on data bus
+CLR P1.0         ; RS = 0 (Command mode)
+CLR P1.1         ; RW = 0 (Write mode)
+SETB P1.2        ; EN = 1 (start pulse)
+ACALL DELAY
+CLR P1.2         ; EN = 0 (latch command on falling edge)
+RET
+
+; ---- DATA SUBROUTINE ----
+DATA:
+MOV P2,A         ; Put character on data bus
+SETB P1.0        ; RS = 1 (Data mode)
+CLR P1.1         ; RW = 0 (Write)
+SETB P1.2        ; EN = 1
+ACALL DELAY
+CLR P1.2         ; EN = 0 (latch character)
+RET
+
+; ---- DELAY ----
+DELAY:
+MOV R3,#255
+D1: DJNZ R3,D1
+RET
+
+; ---- MESSAGE STRING (null-terminated) ----
+MSG: DB 'HELLO',00H
+
+END
