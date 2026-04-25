@@ -1,0 +1,15 @@
+ORG 0000H
+
+; Transfer 5 bytes from RAM[30H–34H] → RAM[40H–44H]
+MOV R0,#30H      ; R0 = source start address (30H)
+MOV R1,#40H      ; R1 = destination start address (40H)
+MOV R2,#05H      ; R2 = byte count (5 bytes)
+
+LOOP:
+MOV A,@R0        ; Read byte from source address [R0]
+MOV @R1,A        ; Write byte to destination address [R1]
+INC R0           ; Source pointer → next address
+INC R1           ; Destination pointer → next address
+DJNZ R2,LOOP    ; Decrement R2; if R2≠0, repeat loop
+
+END
